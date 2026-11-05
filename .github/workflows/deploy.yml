@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       force:
-        description: "Re-extract every dataset file (spends API credits)"
+        description: "Re-process every dataset file"
         type: boolean
         default: false
 
@@ -32,10 +32,15 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # Only new or edited files in dataset/ hit the API; without the secret this is a no-op.
+      # The open-source sentiment model (~500 MB) is downloaded once and reused.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ hashFiles('scripts/extract_empathy.py') }}
+          restore-keys: hf-
+
+      # Free: runs on the runner's CPU, no API keys. Only new or edited files are processed.
       - name: Extract empathy insights
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scripts/extract_empathy.py ${{ inputs.force && '--force' || '' }}
 
       # Commits made with GITHUB_TOKEN don't retrigger this workflow.

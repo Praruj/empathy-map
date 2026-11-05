@@ -1,2 +1,4 @@
-anthropic>=2.5.0,<3
-pydantic>=2.7,<3
+# Free, CPU-only. No API keys.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.4,<3
+transformers>=4.44,<5

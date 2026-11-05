@@ -1,50 +1,125 @@
 [
   {
     "id": "raw_chat_1-1",
-    "trigger_state": "Stranded traveler, nine hours in the airport after a third cancellation, terrified of missing their daughter's graduation.",
-    "de_escalation_pivot": "You're right, and I'm sorry — nine hours with no clear information is exhausting, and the graduation makes this so much more than an inconvenience.",
-    "psychological_technique": "Validation",
-    "explanation": "The first reply ('be patient') asked the customer to manage their own feelings and escalated them. The pivot agrees the anger is justified, names the specific stakes (the graduation), and promises a concrete, time-boxed next step, which turns an adversary into a collaborator.",
+    "trigger_state": "This is the THIRD time my flight has been cancelled. I've been in this airport for 9 hours.",
+    "de_escalation_pivot": "You're right, and I'm sorry — nine hours with no clear information is exhausting, and the graduation makes this so much more than an inconvenience. Let me tell you exactly what I can see and what I can do in the next five minutes.",
+    "psychological_technique": "Naming the Emotion",
+    "explanation": "Customer's sentiment moved from -0.95 to +0.70 after this reply. Cue phrases: “exhausting”, “you're right”, “in the next five minutes”, “i'm sorry”. The earlier reply “I understand your frustration. Please be patient while I check.” used a dismissive cue (“be patient”).",
+    "secondary_techniques": [
+      "Validation",
+      "Concrete Action",
+      "Ownership / Apology"
+    ],
+    "sentiment_before": -0.95,
+    "sentiment_after": 0.7,
+    "failed_attempts": [
+      {
+        "reply": "I understand your frustration. Please be patient while I check.",
+        "shift": 0.19,
+        "dismissive_cues": [
+          "be patient"
+        ]
+      }
+    ],
     "source_file": "raw_chat_1.txt"
   },
   {
     "id": "raw_chat_2-1",
-    "trigger_state": "User who believes a software update erased six months of work and fears losing their job.",
-    "de_escalation_pivot": "You lost six months of work, and the stakes are your job — that's frightening, and being told it'll \"turn out fine\" when you don't know that yet only makes it worse.",
-    "psychological_technique": "Naming the Emotion",
-    "explanation": "The first moderator's 'things usually turn out fine :)' is textbook toxic positivity and drew more anger. The pivot names the fear underneath the anger and explicitly rejects false reassurance, which earns permission to ask diagnostic questions.",
+    "trigger_state": "Your update wiped my entire project folder. Six months of work.",
+    "de_escalation_pivot": "You lost six months of work, and the stakes are your job — that's frightening, and being told it'll \"turn out fine\" when you don't know that yet only makes it worse. Can I ask a couple of questions so we can figure out what's actually recoverable?",
+    "psychological_technique": "Collaborative Problem-Solving",
+    "explanation": "User's sentiment moved from -0.95 to +0.01 after this reply. Cue phrases: “frightening”, “can i ask”, “we can figure”, “so we can”. The earlier reply “Hi, sorry to hear that! Have you checked the recycle bin? Things usually turn ou” used a dismissive cue (“turn out fine”).",
+    "secondary_techniques": [
+      "Naming the Emotion"
+    ],
+    "sentiment_before": -0.95,
+    "sentiment_after": 0.01,
+    "failed_attempts": [
+      {
+        "reply": "Hi, sorry to hear that! Have you checked the recycle bin? Things usually turn out fine :)",
+        "shift": 0.09,
+        "dismissive_cues": [
+          "turn out fine",
+          "have you checked"
+        ]
+      }
+    ],
     "source_file": "raw_chat_2.txt"
   },
   {
     "id": "raw_chat_3-1",
-    "trigger_state": "Grieving child furious at hospice staff, believing their father was neglected in his final days.",
-    "de_escalation_pivot": "I hear how angry you are, and I'm not going to argue with it. You watched your dad die and felt like he was alone more than he should have been.",
+    "trigger_state": "My dad died in hospice last month and the nurses barely came in. I'm so angry I can't sleep.",
+    "de_escalation_pivot": "Both things can be true.",
     "psychological_technique": "Radical Acceptance",
-    "explanation": "The commenter expected defensiveness from an insider. Accepting the anger without rebuttal, and reframing it as love, removes the need to fight; the responder holds 'there may be reasons' and 'your experience is real' together without cancelling either.",
+    "explanation": "Commenter's sentiment moved from -0.95 to +0.10 after this reply. Cue phrases: “both things can be true”. The earlier reply “I hear how angry you are, and I'm not going to argue with it. You watched your d” moved it only +0.39.",
+    "secondary_techniques": [],
+    "sentiment_before": -0.95,
+    "sentiment_after": 0.1,
+    "failed_attempts": [
+      {
+        "reply": "I hear how angry you are, and I'm not going to argue with it. You watched your dad die and felt like he was alone more than he should have been. That anger makes sense — it's attached to how much you loved him.",
+        "shift": 0.39,
+        "dismissive_cues": []
+      }
+    ],
     "source_file": "raw_chat_3.txt"
   },
   {
     "id": "raw_chat_4-1",
-    "trigger_state": "Bank customer stranded abroad with a frozen card, unable to pay for a hotel after four unsuccessful calls.",
+    "trigger_state": "My card got frozen and I'm stuck in Lisbon with no money for the hotel. I've called four times.",
     "de_escalation_pivot": "Let me make sure I've got this right: you're abroad, your card was frozen, you can't pay the hotel tonight, and you've already called four times without getting it fixed. Is that the full picture?",
     "psychological_technique": "Reflective Summarizing",
-    "explanation": "After four calls the customer's core grievance was not being heard. Reflecting every element back, including the repeat calls, proves listening before any fix is offered; the customer's reply ('Finally someone actually listening') marks the shift.",
+    "explanation": "Customer's sentiment moved from -0.93 to +0.44 after this reply. Cue phrases: “let me make sure i've got”, “is that the full picture”, “full picture”.",
+    "secondary_techniques": [],
+    "sentiment_before": -0.93,
+    "sentiment_after": 0.44,
+    "failed_attempts": [],
     "source_file": "raw_chat_4.txt"
   },
   {
     "id": "raw_chat_5-1",
-    "trigger_state": "Person newly diagnosed with MS, overwhelmed by platitudes like 'everything happens for a reason'.",
-    "de_escalation_pivot": "You don't have to find the silver lining today, or this week. You were handed something huge and unfair this morning, and the only \"right\" reaction is whatever you're actually feeling.",
+    "trigger_state": "I got diagnosed with MS today. Everyone keeps telling me \"everything happens for a reason\" and \"at least it's not cancer.\" I want to scream.",
+    "de_escalation_pivot": "This is a real loss, and it's okay that it hurts. You don't have to find the silver lining today, or this week. You were handed something huge and unfair this morning, and the only \"right\" reaction is whatever you're actually feeling.",
     "psychological_technique": "Permission to Feel",
-    "explanation": "'Good vibes only' repeated the exact behavior the poster was complaining about. The pivot names the diagnosis as a loss and removes the pressure to be positive, which is what the poster said they needed: permission to be sad.",
+    "explanation": "Poster's sentiment moved from -0.74 to -0.05 after this reply. Cue phrases: “it's okay that”, “you don't have to”, “whatever you're actually feeling”, “right\" reaction”. The earlier reply “Stay positive! Your attitude is everything. Good vibes only!” used a dismissive cue (“stay positive”).",
+    "secondary_techniques": [
+      "Validation"
+    ],
+    "sentiment_before": -0.74,
+    "sentiment_after": -0.05,
+    "failed_attempts": [
+      {
+        "reply": "Stay positive! Your attitude is everything. Good vibes only!",
+        "shift": 0.73,
+        "dismissive_cues": [
+          "stay positive",
+          "good vibes"
+        ]
+      }
+    ],
     "source_file": "raw_chat_5.txt"
   },
   {
     "id": "raw_chat_6-1",
-    "trigger_state": "Long-time player who feels a ban erased five years and hundreds of dollars without explanation.",
+    "trigger_state": "You banned me for NOTHING. I've played this game for 5 years and spent hundreds of dollars.",
     "de_escalation_pivot": "Five years and that much investment — I'd be furious too if I felt it got thrown away without explanation. You deserve a real answer, not a link. Can I show you exactly what the system flagged, and then you tell me if it looks wrong?",
-    "psychological_technique": "Collaborative Problem-Solving",
-    "explanation": "'Rules are rules. Read the ToS' dismissed the player. The senior mod validates the anger, then invites the player to judge the evidence alongside them, handing back a sense of agency and turning an accusation into a joint review.",
+    "psychological_technique": "Validation",
+    "explanation": "Player's sentiment moved from -0.93 to +0.33 after this reply. Cue phrases: “i'd be furious”, “you deserve”, “can i show”, “you tell me”. The earlier reply “Rules are rules. Read the ToS.” used a dismissive cue (“rules are rules”).",
+    "secondary_techniques": [
+      "Collaborative Problem-Solving"
+    ],
+    "sentiment_before": -0.93,
+    "sentiment_after": 0.33,
+    "failed_attempts": [
+      {
+        "reply": "Rules are rules. Read the ToS.",
+        "shift": 1.91,
+        "dismissive_cues": [
+          "rules are rules",
+          "read the tos"
+        ]
+      }
+    ],
     "source_file": "raw_chat_6.txt"
   }
 ]

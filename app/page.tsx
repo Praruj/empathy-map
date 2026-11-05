@@ -8,6 +8,10 @@ type Insight = {
   de_escalation_pivot: string;
   psychological_technique: string;
   explanation: string;
+  secondary_techniques?: string[];
+  sentiment_before?: number;
+  sentiment_after?: number;
+  failed_attempts?: { reply: string; shift: number; dismissive_cues: string[] }[];
   source_file?: string;
 };
 
@@ -54,9 +58,10 @@ export default function Home() {
           The Empathy Map
         </h1>
         <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-          The exact words that turned an angry or distressed person around, pulled from
-          conversation logs by an offline LLM pass and tagged with the technique that made
-          them work. Compare them with the failed replies that came first.
+          The exact words that turned an angry or distressed person around. A free,
+          open-source sentiment model finds the first reply after which the person&apos;s mood
+          clearly rises, and a transparent phrase lexicon names the technique. Compare it with
+          the reply that failed first.
         </p>
       </header>
 
@@ -95,8 +100,8 @@ export default function Home() {
       </section>
 
       <footer className="mt-16 border-t border-border pt-6 text-sm text-muted">
-        Static site, no live inference. Data compiled offline with Claude and rebuilt by GitHub
-        Actions. Sample conversations are synthetic.
+        Static site, no live inference, no paid APIs. Data compiled offline with an
+        open-source model and rebuilt by GitHub Actions. Sample conversations are synthetic.
       </footer>
     </main>
   );
@@ -127,12 +132,24 @@ function Chip({
 }
 
 function Card({ insight }: { insight: Insight }) {
+  const failed = insight.failed_attempts?.[0];
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="border-l-4 border-accent bg-accent-soft px-5 py-4">
         <p className="font-mono text-[11px] uppercase tracking-widest text-accent">Tension</p>
         <p className="mt-1 leading-relaxed">{insight.trigger_state}</p>
       </div>
+      {failed && (
+        <div className="border-l-4 border-border px-5 py-3">
+          <p className="font-mono text-[11px] uppercase tracking-widest text-muted">
+            Didn&apos;t help
+            {failed.dismissive_cues.length > 0 && ` · dismissive: “${failed.dismissive_cues[0]}”`}
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-muted line-through decoration-muted/40">
+            “{failed.reply}”
+          </p>
+        </div>
+      )}
       <div className="border-l-4 border-calm bg-calm-soft px-5 py-4">
         <p className="font-mono text-[11px] uppercase tracking-widest text-calm">The pivot</p>
         <blockquote className="mt-1 text-lg leading-relaxed font-medium">
@@ -140,11 +157,49 @@ function Card({ insight }: { insight: Insight }) {
         </blockquote>
       </div>
       <div className="px-5 py-4">
-        <span className="inline-block rounded-full bg-foreground px-3 py-1 text-xs font-medium text-background">
-          {insight.psychological_technique}
-        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-block rounded-full bg-foreground px-3 py-1 text-xs font-medium text-background">
+            {insight.psychological_technique}
+          </span>
+          {insight.secondary_techniques?.map((t) => (
+            <span key={t} className="inline-block rounded-full border border-border px-3 py-1 text-xs text-muted">
+              {t}
+            </span>
+          ))}
+        </div>
+        {insight.sentiment_before !== undefined && insight.sentiment_after !== undefined && (
+          <Shift before={insight.sentiment_before} after={insight.sentiment_after} />
+        )}
         <p className="mt-3 text-sm leading-relaxed text-muted">{insight.explanation}</p>
       </div>
     </article>
+  );
+}
+
+// Sentiment runs from -1 (negative) to +1 (positive); map it onto a 0-100% track.
+function Shift({ before, after }: { before: number; after: number }) {
+  const pos = (v: number) => `${((v + 1) / 2) * 100}%`;
+  const lo = Math.min(before, after);
+  const hi = Math.max(before, after);
+  return (
+    <div className="mt-4">
+      <div className="flex justify-between font-mono text-[11px] text-muted">
+        <span>negative</span>
+        <span>
+          sentiment {before >= 0 ? "+" : ""}
+          {before.toFixed(2)} → {after >= 0 ? "+" : ""}
+          {after.toFixed(2)}
+        </span>
+        <span>positive</span>
+      </div>
+      <div className="relative mt-1 h-2 rounded-full bg-border">
+        <div
+          className="absolute h-2 rounded-full bg-calm/50"
+          style={{ left: pos(lo), width: `calc(${pos(hi)} - ${pos(lo)})` }}
+        />
+        <div className="absolute -top-0.5 h-3 w-3 -translate-x-1/2 rounded-full bg-accent" style={{ left: pos(before) }} />
+        <div className="absolute -top-0.5 h-3 w-3 -translate-x-1/2 rounded-full bg-calm" style={{ left: pos(after) }} />
+      </div>
+    </div>
   );
 }
