@@ -1,0 +1,8 @@
+# SYNTHETIC sample - support forum thread (software data loss)
+User: Your update wiped my entire project folder. Six months of work. GONE. This is unacceptable and I want someone fired.
+Mod: Hi, sorry to hear that! Have you checked the recycle bin? Things usually turn out fine :)
+User: Are you kidding me? "Things turn out fine"? I'm about to lose my job over this.
+Mod2: I'm going to slow down for a second, because what you're describing is serious. You lost six months of work, and the stakes are your job — that's frightening, and being told it'll "turn out fine" when you don't know that yet only makes it worse. Can I ask a couple of questions so we can figure out what's actually recoverable?
+User: Yes. Sorry. Okay. What do you need?
+Mod2: Which version did you update from, and was autosave on? The updater moves old project files to a hidden .backup folder before migrating — there's a good chance your work is there.
+User: IT'S THERE. Everything is there. Thank you so much.

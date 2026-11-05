@@ -1,0 +1,8 @@
+# SYNTHETIC sample - customer support chat (airline rebooking)
+Customer: This is the THIRD time my flight has been cancelled. I've been in this airport for 9 hours. Nobody is telling me anything and I'm missing my daughter's graduation tomorrow.
+Agent: I understand your frustration. Please be patient while I check.
+Customer: "Be patient"? I've been patient for nine hours! Do you people even care?
+Agent: You're right, and I'm sorry — nine hours with no clear information is exhausting, and the graduation makes this so much more than an inconvenience. Missing a moment like that isn't something a voucher fixes. Let me tell you exactly what I can see and what I can do in the next five minutes.
+Customer: ...okay. Thank you. I just need to know if I can get there by tomorrow noon.
+Agent: There's a 6:10am departure arriving 10:45am with two seats left. I'm holding one for you right now.
+Customer: Oh thank god. Okay. Sorry for yelling.

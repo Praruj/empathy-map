@@ -1,0 +1,6 @@
+# SYNTHETIC sample - customer service chat (bank card frozen abroad)
+Customer: My card got frozen and I'm stuck in Lisbon with no money for the hotel. I've called four times. This bank is a joke.
+Agent: Let me make sure I've got this right: you're abroad, your card was frozen, you can't pay the hotel tonight, and you've already called four times without getting it fixed. Is that the full picture?
+Customer: Yes. Exactly. Finally someone actually listening.
+Agent: Okay. The freeze was triggered by our fraud system because of the foreign transaction. I can verify you right now and lift it, and I'll add a travel note so it doesn't happen again this trip.
+Customer: Please. Thank you. That's all I wanted.

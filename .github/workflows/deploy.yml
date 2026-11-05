@@ -1,0 +1,75 @@
+name: Compile data and deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Re-extract every dataset file (spends API credits)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  data-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # Only new or edited files in dataset/ hit the API; without the secret this is a no-op.
+      - name: Extract empathy insights
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/extract_empathy.py ${{ inputs.force && '--force' || '' }}
+
+      # Commits made with GITHUB_TOKEN don't retrigger this workflow.
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "data: recompile empathy_db.json"
+          file_pattern: public/data/empathy_db.json scripts/.extract_cache.json
+
+  build-and-deploy:
+    needs: data-pipeline
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Check out the branch tip so the data commit from the previous job is included.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

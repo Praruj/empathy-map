@@ -1,103 +1,150 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+
+type Insight = {
+  id: string;
+  trigger_state: string;
+  de_escalation_pivot: string;
+  psychological_technique: string;
+  explanation: string;
+  source_file?: string;
+};
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [data, setData] = useState<Insight[] | null>(null);
+  const [error, setError] = useState(false);
+  const [query, setQuery] = useState("");
+  const [technique, setTechnique] = useState<string | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+  useEffect(() => {
+    fetch(`${BASE_PATH}/data/empathy_db.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then(setData)
+      .catch(() => setError(true));
+  }, []);
+
+  const techniques = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const d of data ?? [])
+      counts.set(d.psychological_technique, (counts.get(d.psychological_technique) ?? 0) + 1);
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [data]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return (data ?? []).filter(
+      (d) =>
+        (!technique || d.psychological_technique === technique) &&
+        (!q ||
+          d.trigger_state.toLowerCase().includes(q) ||
+          d.psychological_technique.toLowerCase().includes(q)),
+    );
+  }, [data, query, technique]);
+
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+      <header className="mb-10">
+        <p className="font-mono text-xs uppercase tracking-widest text-muted">
+          De-escalation database
+        </p>
+        <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
+          The Empathy Map
+        </h1>
+        <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+          The exact words that turned an angry or distressed person around, pulled from
+          conversation logs by an offline LLM pass and tagged with the technique that made
+          them work. Compare them with the failed replies that came first.
+        </p>
+      </header>
+
+      <div className="sticky top-0 z-10 -mx-4 bg-background/90 px-4 py-3 backdrop-blur">
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search a situation or technique — e.g. grief, airline, validation"
+          aria-label="Search by trigger state or technique"
+          className="w-full rounded-xl border border-border bg-card px-4 py-3 text-base outline-none transition focus:border-accent"
+        />
+        {techniques.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Chip active={technique === null} onClick={() => setTechnique(null)}>
+              All · {data?.length}
+            </Chip>
+            {techniques.map(([t, n]) => (
+              <Chip key={t} active={technique === t} onClick={() => setTechnique(technique === t ? null : t)}>
+                {t} · {n}
+              </Chip>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <section className="mt-6 space-y-5">
+        {error && <p className="text-muted">Couldn&apos;t load the catalog.</p>}
+        {!data && !error && <p className="text-muted">Loading…</p>}
+        {data && filtered.length === 0 && (
+          <p className="text-muted">No moments match “{query}”.</p>
+        )}
+        {filtered.map((d) => (
+          <Card key={d.id} insight={d} />
+        ))}
+      </section>
+
+      <footer className="mt-16 border-t border-border pt-6 text-sm text-muted">
+        Static site, no live inference. Data compiled offline with Claude and rebuilt by GitHub
+        Actions. Sample conversations are synthetic.
       </footer>
-    </div>
+    </main>
+  );
+}
+
+function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      className={`rounded-full border px-3 py-1 text-sm transition ${
+        active
+          ? "border-foreground bg-foreground text-background"
+          : "border-border bg-card text-muted hover:border-foreground hover:text-foreground"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function Card({ insight }: { insight: Insight }) {
+  return (
+    <article className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="border-l-4 border-accent bg-accent-soft px-5 py-4">
+        <p className="font-mono text-[11px] uppercase tracking-widest text-accent">Tension</p>
+        <p className="mt-1 leading-relaxed">{insight.trigger_state}</p>
+      </div>
+      <div className="border-l-4 border-calm bg-calm-soft px-5 py-4">
+        <p className="font-mono text-[11px] uppercase tracking-widest text-calm">The pivot</p>
+        <blockquote className="mt-1 text-lg leading-relaxed font-medium">
+          “{insight.de_escalation_pivot}”
+        </blockquote>
+      </div>
+      <div className="px-5 py-4">
+        <span className="inline-block rounded-full bg-foreground px-3 py-1 text-xs font-medium text-background">
+          {insight.psychological_technique}
+        </span>
+        <p className="mt-3 text-sm leading-relaxed text-muted">{insight.explanation}</p>
+      </div>
+    </article>
   );
 }

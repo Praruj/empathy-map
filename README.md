@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Empathy Map
 
-## Getting Started
+A browsable catalog of **empathy in action**: moments in conversation logs where a
+distressed or angry person was calmed down, the exact words that did it, and the
+psychological technique behind them (Validation, Reflective Summarizing, Radical
+Acceptance, Permission to Feel, …). Each card also notes what failed first, so you can
+see the difference between real validation and toxic positivity.
 
-First, run the development server:
+**Live:** https://praruj.github.io/empathy-map/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## How it works
+
+Inspired by Andrej Karpathy's HackerTube approach: the LLM is an **offline data
+compiler**, not a live service. Nothing calls a model when you load the page.
+
+```
+dataset/*.txt ──► scripts/extract_empathy.py ──► public/data/empathy_db.json ──► Next.js static export ──► GitHub Pages
+                  (Claude, structured output)       (committed to the repo)        (output: 'export')
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Pipeline** — `scripts/extract_empathy.py` sends each conversation log to Claude
+   with a JSON schema and gets back the pivot(s): `id`, `trigger_state`,
+   `de_escalation_pivot` (verbatim quote), `psychological_technique`, `explanation`.
+   File hashes are cached in `scripts/.extract_cache.json`, so only new or edited logs
+   cost API calls.
+2. **Frontend** — Next.js App Router with `output: 'export'`, Tailwind, client-side
+   search over the static JSON.
+3. **Engine** — `.github/workflows/deploy.yml` runs the pipeline, commits any new JSON
+   back to `main`, builds the export and deploys it to Pages.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Drop `.txt` conversation logs in `dataset/` and push. To enable extraction in CI, add
+an `ANTHROPIC_API_KEY` repository secret (Settings → Secrets and variables → Actions).
+Without it the pipeline step is a no-op and the site serves the committed JSON.
+Run with **Actions → Compile data and deploy to Pages → Run workflow → force** to
+re-extract everything.
 
-## Learn More
+The six sample logs in `dataset/` are **synthetic**, written for this demo. The seed
+`empathy_db.json` was compiled from them by Claude during development; the CI pipeline
+produces the same schema.
 
-To learn more about Next.js, take a look at the following resources:
+## Local development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install
+npm run dev                                  # http://localhost:3000
+pip install -r requirements.txt
+ANTHROPIC_API_KEY=... python scripts/extract_empathy.py
+```

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "raw_chat_1-1",
+    "trigger_state": "Stranded traveler, nine hours in the airport after a third cancellation, terrified of missing their daughter's graduation.",
+    "de_escalation_pivot": "You're right, and I'm sorry — nine hours with no clear information is exhausting, and the graduation makes this so much more than an inconvenience.",
+    "psychological_technique": "Validation",
+    "explanation": "The first reply ('be patient') asked the customer to manage their own feelings and escalated them. The pivot agrees the anger is justified, names the specific stakes (the graduation), and promises a concrete, time-boxed next step, which turns an adversary into a collaborator.",
+    "source_file": "raw_chat_1.txt"
+  },
+  {
+    "id": "raw_chat_2-1",
+    "trigger_state": "User who believes a software update erased six months of work and fears losing their job.",
+    "de_escalation_pivot": "You lost six months of work, and the stakes are your job — that's frightening, and being told it'll \"turn out fine\" when you don't know that yet only makes it worse.",
+    "psychological_technique": "Naming the Emotion",
+    "explanation": "The first moderator's 'things usually turn out fine :)' is textbook toxic positivity and drew more anger. The pivot names the fear underneath the anger and explicitly rejects false reassurance, which earns permission to ask diagnostic questions.",
+    "source_file": "raw_chat_2.txt"
+  },
+  {
+    "id": "raw_chat_3-1",
+    "trigger_state": "Grieving child furious at hospice staff, believing their father was neglected in his final days.",
+    "de_escalation_pivot": "I hear how angry you are, and I'm not going to argue with it. You watched your dad die and felt like he was alone more than he should have been.",
+    "psychological_technique": "Radical Acceptance",
+    "explanation": "The commenter expected defensiveness from an insider. Accepting the anger without rebuttal, and reframing it as love, removes the need to fight; the responder holds 'there may be reasons' and 'your experience is real' together without cancelling either.",
+    "source_file": "raw_chat_3.txt"
+  },
+  {
+    "id": "raw_chat_4-1",
+    "trigger_state": "Bank customer stranded abroad with a frozen card, unable to pay for a hotel after four unsuccessful calls.",
+    "de_escalation_pivot": "Let me make sure I've got this right: you're abroad, your card was frozen, you can't pay the hotel tonight, and you've already called four times without getting it fixed. Is that the full picture?",
+    "psychological_technique": "Reflective Summarizing",
+    "explanation": "After four calls the customer's core grievance was not being heard. Reflecting every element back, including the repeat calls, proves listening before any fix is offered; the customer's reply ('Finally someone actually listening') marks the shift.",
+    "source_file": "raw_chat_4.txt"
+  },
+  {
+    "id": "raw_chat_5-1",
+    "trigger_state": "Person newly diagnosed with MS, overwhelmed by platitudes like 'everything happens for a reason'.",
+    "de_escalation_pivot": "You don't have to find the silver lining today, or this week. You were handed something huge and unfair this morning, and the only \"right\" reaction is whatever you're actually feeling.",
+    "psychological_technique": "Permission to Feel",
+    "explanation": "'Good vibes only' repeated the exact behavior the poster was complaining about. The pivot names the diagnosis as a loss and removes the pressure to be positive, which is what the poster said they needed: permission to be sad.",
+    "source_file": "raw_chat_5.txt"
+  },
+  {
+    "id": "raw_chat_6-1",
+    "trigger_state": "Long-time player who feels a ban erased five years and hundreds of dollars without explanation.",
+    "de_escalation_pivot": "Five years and that much investment — I'd be furious too if I felt it got thrown away without explanation. You deserve a real answer, not a link. Can I show you exactly what the system flagged, and then you tell me if it looks wrong?",
+    "psychological_technique": "Collaborative Problem-Solving",
+    "explanation": "'Rules are rules. Read the ToS' dismissed the player. The senior mod validates the anger, then invites the player to judge the evidence alongside them, handing back a sense of agency and turning an accusation into a joint review.",
+    "source_file": "raw_chat_6.txt"
+  }
+]
