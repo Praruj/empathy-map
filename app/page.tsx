@@ -65,7 +65,7 @@ export default function Home() {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search a situation or technique — e.g. grief, airline, validation"
+          placeholder="Search a situation or technique — e.g. airport, bank, validation"
           aria-label="Search by trigger state or technique"
           className="w-full rounded-xl border border-border bg-card px-4 py-3 text-base outline-none transition focus:border-accent"
         />
